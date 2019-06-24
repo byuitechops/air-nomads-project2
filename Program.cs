@@ -7,6 +7,7 @@ namespace air_nomades_projectSquared
         static void Main(string[] args)
         {
             //1. Call prompter
+            var prompts = Prompter.PromptUser();
 
             //2. Receive report
         }
