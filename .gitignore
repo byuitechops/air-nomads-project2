@@ -3,3 +3,5 @@ bin
 
 test/bin
 test/obj
+
+.vscode

@@ -1,37 +1,39 @@
 using System;
 using System.Collections.Generic;
 
-class Prompter
+public static class Prompter
 {
-    private string ApiToken;
-    private List<Prompt> PromptList;
+    //private string ApiToken;
+    //private List<Prompt> PromptList;
 
-    public List<Prompt> PromptUser()
+    public static List<Prompt> PromptUser()
     {
-           var run = true;
+        var PromptList = new List<Prompt>();
 
-            System.Console.WriteLine("Enter course API key, followed by courseID (type 'exit' when done):");
-            while (run)
+        var run = true;
+
+        System.Console.WriteLine("Enter course API key, followed by courseID (type 'exit' when done):");
+        while (run)
+        {
+            string apiKey = Console.ReadLine();
+            string courseId = Console.ReadLine();
+            string outFormat = Console.ReadLine();
+            string keepGoing = Console.ReadLine();
+            System.Console.WriteLine("Would you like to add another course? (Y/N)");
+            if (keepGoing == "N")
             {
-                string apiKey = Console.ReadLine();
-                string courseId = Console.ReadLine();
-                string outFormat = Console.ReadLine();
-                string keepGoing = Console.ReadLine();
-                System.Console.WriteLine("Would you like to add another course? (Y/N)");
-                if (keepGoing == "N")
-                {
-                    run = false;
-                }
-                else
-                {
-                    PromptList.Add(new Prompt(apiKey, courseId, outFormat));
-                }
+                run = false;
             }
-            return this.PromptList;
+            else
+            {
+                PromptList.Add(new Prompt(apiKey, courseId, outFormat));
+            }
+        }
+        return PromptList;
     }
 }
-
-internal class Prompt
+// this should be public because a program will be accessing the variable of each prompt
+public class Prompt
 {
     private string ApiKey;
     private string CourseId;
