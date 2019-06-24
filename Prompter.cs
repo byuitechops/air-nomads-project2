@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 class Prompter
@@ -5,9 +6,26 @@ class Prompter
     private string ApiToken;
     private List<Prompt> PromptList;
 
-    public List<Prompt> prompt()
+    public List<Prompt> PromptUser()
     {
-        return PromptList;
+           var run = true;
+
+            System.Console.WriteLine("Enter course API keys, followed by courseID (type 'exit' when done):");
+            while (run)
+            {
+                string apiKey = Console.ReadLine();
+                string courseId = Console.ReadLine();
+                string outFormat = Console.ReadLine();
+                if (apiKey == "exit")
+                {
+                    run = false;
+                }
+                else
+                {
+                    PromptList.Add(new Prompt(apiKey, courseId, outFormat));
+                }
+            }
+        return this.PromptList;
     }
 }
 
