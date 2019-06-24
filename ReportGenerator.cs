@@ -34,6 +34,7 @@ class GenerateJSON : IReport
     }
 }
 
+// Should we just make this an abstract class so that we don't have to repeat variables?
 interface IReport
 {
     string ReportData { get; set; }
