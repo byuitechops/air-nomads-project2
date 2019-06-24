@@ -10,13 +10,15 @@ class Prompter
     {
            var run = true;
 
-            System.Console.WriteLine("Enter course API keys, followed by courseID (type 'exit' when done):");
+            System.Console.WriteLine("Enter course API key, followed by courseID (type 'exit' when done):");
             while (run)
             {
                 string apiKey = Console.ReadLine();
                 string courseId = Console.ReadLine();
                 string outFormat = Console.ReadLine();
-                if (apiKey == "exit")
+                string keepGoing = Console.ReadLine();
+                System.Console.WriteLine("Would you like to add another course? (Y/N)");
+                if (keepGoing == "N")
                 {
                     run = false;
                 }
@@ -25,7 +27,7 @@ class Prompter
                     PromptList.Add(new Prompt(apiKey, courseId, outFormat));
                 }
             }
-        return this.PromptList;
+            return this.PromptList;
     }
 }
 
