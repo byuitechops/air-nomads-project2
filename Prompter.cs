@@ -44,10 +44,10 @@ public static class Prompter
 // this should be public because a program will be accessing the variable of each prompt
 public class Prompt
 {
-    private string ApiKey;
-    private string CourseId;
-    private string OutFormat;
-    private string Destination;
+    public string ApiKey { get; set; }
+    public string CourseId { get; set; }
+    public string OutFormat { get; set; }
+    public string Destination { get; set; }
 
     public Prompt(string ApiKey, string CourseId, string OutFormat, string Destination)
     {
