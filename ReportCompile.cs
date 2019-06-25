@@ -1,22 +1,24 @@
 
 using System.Threading.Tasks;
-
-class ReportCompile
+namespace air_nomades_projectSquared
 {
-    private IReport ReportGenerator;
-    private HttpObject HttpHandler;
-    private Prompt PromptObject;
-    public ReportCompile(Prompt prompt, IReport ReportGenerator, HttpObject HttpHandler)
+    class ReportCompile
     {
-        this.ReportGenerator = ReportGenerator;
-        this.HttpHandler = HttpHandler;
-        this.PromptObject = prompt;
+        private IReport ReportGenerator;
+        private HttpObject HttpHandler;
+        private Prompt PromptObject;
+        public ReportCompile(Prompt prompt, IReport ReportGenerator, HttpObject HttpHandler)
+        {
+            this.ReportGenerator = ReportGenerator;
+            this.HttpHandler = HttpHandler;
+            this.PromptObject = prompt;
+        }
+
+        // public async Task Compile()
+        // {
+        //     var request = await HttpHandler.GetRequest();
+        //     return ReportGenerator.GenerateReport(request);
+
+        // }
     }
-
-    // public async Task Compile()
-    // {
-    //     var request = await HttpHandler.GetRequest();
-    //     return ReportGenerator.GenerateReport(request);
-
-    // }
 }
