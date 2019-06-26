@@ -1,24 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CanvasObjects;
 namespace air_nomades_projectSquared
 {
-    interface HttpObject
-    {
-        string URL { get; set; }
-        string Token { get; set; }
-        // Task GetRequest();
-    }
-
-    class GET : HttpObject
+    public abstract class HttpObject
     {
         public string URL { get; set; }
         public string Token { get; set; }
-        public GET()
+        public HttpObject()
         {
             Token = Environment.GetEnvironmentVariable("API_TOKEN");
         }
-        internal async Task<string> MakeGetRequest(Prompt Prompt)
+        virtual internal async Task<string> MakeGetRequest(Prompt Prompt)
         {
             //DEFINE THE URL FOR THE CALL BY USING THE PROMPT OBJECT
             System.Console.WriteLine(Prompt);
@@ -47,15 +42,17 @@ namespace air_nomades_projectSquared
         }
     }
 
-
-    class POST : HttpObject
-    {
-        public string URL { get; set; }
-        public string Token { get; set; }
-        // string token = Environment.GetEnvironmentVariable("API_TOKEN");
-        public async Task MakePostRequest()
-        {
-
+    public class ModuleItemGrabber : HttpObject{
+        public List<Module_Item> getModuleItems(string[] module_ids){
+            var items = new List<Module_Item>();
+            return items;
         }
     }
+    public class ModuleGrabber : HttpObject{
+        public List<Module> getModules(string[] module_ids){
+            var modules = new List<Module>();
+            return modules;
+        }
+    }
+
 }

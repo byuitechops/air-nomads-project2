@@ -16,8 +16,8 @@ namespace air_nomades_projectSquared
             //System.Console.WriteLine("Enter course API key and courseID (type 'exit' when done):");
             while (run)
             {
-                System.Console.WriteLine("Course API Endpoint:");
-                string apiKey = Console.ReadLine();
+                // // System.Console.WriteLine("Course API Endpoint:");
+                // string apiKey =  //Console.ReadLine();
 
                 System.Console.WriteLine("Course ID:");
                 string courseId = Console.ReadLine();
@@ -36,7 +36,7 @@ namespace air_nomades_projectSquared
                 }
                 else
                 {
-                    PromptList.Add(new Prompt(apiKey, courseId, outFormat, destination));
+                    PromptList.Add(new Prompt(courseId, outFormat, destination));
                 }
             }
             return PromptList;
@@ -51,13 +51,17 @@ public class Prompt
     public string OutFormat { get; set; }
     public string Destination { get; set; }
 
-    public Prompt(string ApiKey, string CourseId, string OutFormat, string Destination)
+    public Prompt(string CourseId, string OutFormat, string Destination)
     {
-        this.ApiKey = ApiKey;
+        this.ApiKey = "https://byui.instructure.com/api/v1/courses";
         this.CourseId = CourseId;
         this.OutFormat = OutFormat;
         this.Destination = Destination;
 
+    }
+    public string getAPICallURL()
+    {
+        return this.ApiKey + "/" + this.CourseId;
     }
 
 }
