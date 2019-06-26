@@ -1,4 +1,6 @@
 using System;
+using System.Xml;
+
 namespace ReportGeneratorFunctions
 {
     public class GenerateCSV : IReport
@@ -49,7 +51,6 @@ namespace ReportGeneratorFunctions
 
         public bool GenerateReport(string ReportData)
         {
-
 
             try
             {

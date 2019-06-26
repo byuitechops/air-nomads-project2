@@ -28,15 +28,12 @@ namespace air_nomades_projectSquared
                 System.Console.WriteLine("Destination Path:");
                 string destination = Console.ReadLine();
 
+                PromptList.Add(new Prompt(courseId, outFormat, destination));
                 System.Console.WriteLine("Would you like to add another course? (Y/N)");
                 string keepGoing = Console.ReadLine();
                 if (keepGoing.ToUpper() == "N")
                 {
                     run = false;
-                }
-                else
-                {
-                    PromptList.Add(new Prompt(courseId, outFormat, destination));
                 }
             }
             return PromptList;

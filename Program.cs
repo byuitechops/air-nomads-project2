@@ -5,10 +5,6 @@ using Newtonsoft.Json;
 using ReportGeneratorFunctions;
 namespace air_nomades_projectSquared
 {
-
-
-
-
     class Program
     {
         public static IReport grabReportObject(string type, string destination)
@@ -32,15 +28,23 @@ namespace air_nomades_projectSquared
         }
         static async Task Main(string[] args)
         {
-            //List<Prompt> prompts = Prompter.PromptUser();
-            var prompt = new Prompt("59796", "json", "disworked");
-            CourseGrabber http = new CourseGrabber(prompt.CourseId);
-            DoNothingGrabber nothing = new DoNothingGrabber();
-            var format = prompt.OutFormat;
-            var dest = prompt.Destination;
-             grabReportObject(format, dest);
-            var compiler = new ReportCompile(prompt, grabReportObject(format, dest), new GetAccountHandler());
-            await compiler.CompileReport();
+            List<Prompt> prompts = Prompter.PromptUser();
+            //var prompt = new Prompt("59796", "json", "disworked");
+            var compiler = new ReportCompile();
+            CourseGrabber http = new CourseGrabber();
+            var SuccessReports = new Dictionary<string, bool>();
+            System.Console.WriteLine("Prompts: "+prompts.Count);
+            foreach (var prompt in prompts)
+            {
+                http.CourseID = prompt.CourseId;
+                compiler.CalibrateCompiler(prompt, grabReportObject(prompt.OutFormat, prompt.Destination), http);
+                SuccessReports.Add(prompt.Destination, await compiler.CompileReport());
+            }
+
+            foreach(var item in SuccessReports){
+                System.Console.WriteLine(item.Key +" ====== " + (item.Value ?  "Successful" : "Error!" ));
+            }
+
             //var response = await http.GrabCourseObject();
             //System.Console.WriteLine(JsonConvert.SerializeObject(response));
             // GenerateJSON report = new GenerateJSON();

@@ -14,7 +14,7 @@ namespace air_nomades_projectSquared
         {
             Token = Environment.GetEnvironmentVariable("API_TOKEN");
         }
-
+        #pragma warning disable 1998
         public virtual async Task<string> grabCourseData(){
             return "{\"result\":\"No Data to Grab!\"}";
         }
@@ -47,22 +47,30 @@ namespace air_nomades_projectSquared
 
     public class CourseGrabber : HttpObject
     {
-        public string URL { get; set; }
+        
         public string CourseID;
         public Course CourseObject;
         private ModuleGrabber ModGrabber;
+
+        private void setup(){
+    this.ModGrabber = new ModuleGrabber();
+        }
+        public CourseGrabber(){
+            setup();
+        }
         public CourseGrabber(string CourseID)
         {
             this.CourseID = CourseID;
-            this.URL = "https://byui.instructure.com/api/v1/courses/" + this.CourseID;
-            this.ModGrabber = new ModuleGrabber();
+            setup();
         }
         public async override Task<string> grabCourseData()
         {
-            var result = await this.MakeGetRequest(this.URL);
+            
+            var url  = "https://byui.instructure.com/api/v1/courses/" + this.CourseID;
+            var result = await this.MakeGetRequest(url);
             this.CourseObject = JsonConvert.DeserializeObject<Course>(result);
-            this.CourseObject.Modules = await ModGrabber.getModules(this.URL);
-            var json = JsonConvert.SerializeObject(this.CourseObject);
+            this.CourseObject.Modules = await ModGrabber.getModules(url);
+            var json = JsonConvert.SerializeObject(this.CourseObject, Formatting.Indented);
 
             return json;
         }

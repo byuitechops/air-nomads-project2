@@ -9,7 +9,11 @@ namespace air_nomades_projectSquared
         private IReport ReportGenerator;
         private HttpObject HttpHandler;
         private Prompt PromptObject;
-        public ReportCompile(Prompt prompt, IReport ReportGenerator, HttpObject HttpHandler)
+        public ReportCompile(){}
+        public ReportCompile(Prompt prompt, IReport ReportGenerator, HttpObject HttpHandler){
+            this.CalibrateCompiler(prompt, ReportGenerator, HttpHandler);
+        }
+        public void CalibrateCompiler(Prompt prompt, IReport ReportGenerator, HttpObject HttpHandler)
         {
             this.ReportGenerator = ReportGenerator;
             this.HttpHandler = HttpHandler;
