@@ -53,15 +53,10 @@ public class Prompt
 
     public Prompt(string CourseId, string OutFormat, string Destination)
     {
-        this.ApiKey = "https://byui.instructure.com/api/v1/courses";
         this.CourseId = CourseId;
         this.OutFormat = OutFormat;
         this.Destination = Destination;
 
-    }
-    public string getAPICallURL()
-    {
-        return this.ApiKey + "/" + this.CourseId;
     }
 
 }
