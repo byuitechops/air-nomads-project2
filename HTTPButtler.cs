@@ -3,71 +3,126 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CanvasObjects;
+using Newtonsoft.Json;
 namespace air_nomades_projectSquared
 {
     public abstract class HttpObject
     {
-        public string URL { get; set; }
         public string Token { get; set; }
+        private static readonly HttpClient client = new HttpClient();
         public HttpObject()
         {
             Token = Environment.GetEnvironmentVariable("API_TOKEN");
         }
-        virtual internal async Task<string> MakeGetRequest(Prompt Prompt, string URL2)
+
+        public virtual async Task<string> grabCourseData(){
+            return "{\"result\":\"No Data to Grab!\"}";
+        }
+        virtual public async Task<string> MakeGetRequest(string url)
         {
+            // URL2 = "https://byui.instructure.com/api/courses/";
             //DEFINE THE URL FOR THE CALL BY USING THE PROMPT OBJECT
-            System.Console.WriteLine(Prompt);
+            // System.Console.WriteLine(Prompt);
             // DO SUPER LEGIT ASYNC REQUEST STUFF HERE
-            using (HttpClient client = new HttpClient())
+            try
             {
-
-                try
-                {
-                    //Sets securely our canvas token to our http header
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
-                    //asynchronously makes a get request to the link we want to
-                    HttpResponseMessage response = await client.GetAsync(URL2);
-                    response.EnsureSuccessStatusCode();
-                    //stringfy the response
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    return responseBody;
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine("\nException Caught!");
-                    Console.WriteLine("Message :{0} ", e.Message);
-                    throw;
-                }
+                //Sets securely our canvas token to our http header
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+                //asynchronously makes a get request to the link we want to
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                //stringfy the response
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return responseBody;
             }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+                throw;
+            }
+
         }
     }
 
-    public class CourseGrabber:HttpClient{
-       public int CourseID;
-       public CourseGrabber(int CourseID){
-           this.CourseID = CourseID;
-       }
-
-        public Course grabCourse(ModuleGrabber ModuleGrabber, ModuleItemGrabber ItemGrabber){
-
+    public class CourseGrabber : HttpObject
+    {
+        public string URL { get; set; }
+        public string CourseID;
+        public Course CourseObject;
+        private ModuleGrabber ModGrabber;
+        public CourseGrabber(string CourseID)
+        {
+            this.CourseID = CourseID;
+            this.URL = "https://byui.instructure.com/api/v1/courses/" + this.CourseID;
+            this.ModGrabber = new ModuleGrabber();
         }
+        public async override Task<string> grabCourseData()
+        {
+            var result = await this.MakeGetRequest(this.URL);
+            this.CourseObject = JsonConvert.DeserializeObject<Course>(result);
+            this.CourseObject.Modules = await ModGrabber.getModules(this.URL);
+            var json = JsonConvert.SerializeObject(this.CourseObject);
+
+            return json;
+        }
+
+        // public Course grabCourse(ModuleGrabber ModuleGrabber, ModuleItemGrabber ItemGrabber){
+
+        // }
 
     }
 
-    public class ModuleItemGrabber : HttpClient{
+    public class DoNothingGrabber:HttpObject{
+        public override async Task<string> grabCourseData(){
+            return "{\"value\":\"doing nothing boss!\"}";
+        }
+    }
 
-        public ModuleItemGrabber(){
+    public class GetAccountHandler:HttpObject{
+        public override async Task<string> grabCourseData(){
+            return await this.MakeGetRequest("https://byui.instructure.com/api/v1/accounts");
+        }
+    }
+
+    public class ModuleItemGrabber : HttpObject
+    {
+
+        public ModuleItemGrabber()
+        {
 
         }
-        public List<Module_Item> getModuleItems(string[] module_ids){
-            var items = new List<Module_Item>();
+        public async Task<List<Module_Item>> getModuleItems(string url)
+        {
+            string result = await this.MakeGetRequest(url);
+            if (!result.StartsWith("["))
+                result = $"[{result}]";
+            var items = JsonConvert.DeserializeObject<List<Module_Item>>(result);
             return items;
         }
     }
-    public class ModuleGrabber : HttpObject{
-        public List<Module> getModules(string[] module_ids){
-            var modules = new List<Module>();
-            return modules;
+    public class ModuleGrabber : HttpObject
+    {
+
+        private ModuleItemGrabber ItemGrabber { get; set; }
+        public ModuleGrabber()
+        {
+            this.ItemGrabber = new ModuleItemGrabber();
+        }
+
+        public async Task<List<Module>> getModules(string url)
+        {
+            var requestUrl = url + "/modules";
+            var result = await this.MakeGetRequest(requestUrl);
+            var Modules = JsonConvert.DeserializeObject<List<Module>>(result);
+
+            foreach (var module in Modules)
+            {
+                System.Console.WriteLine(module.items_url);
+                module.Module_Items = (await ItemGrabber.getModuleItems(module.items_url));
+            }
+            //System.Console.WriteLine(Modules[0].Module_Items[0].id);
+            return Modules;
         }
     }
 

@@ -1,5 +1,7 @@
 
 using System.Threading.Tasks;
+using ReportGeneratorFunctions;
+
 namespace air_nomades_projectSquared
 {
     class ReportCompile
@@ -12,6 +14,12 @@ namespace air_nomades_projectSquared
             this.ReportGenerator = ReportGenerator;
             this.HttpHandler = HttpHandler;
             this.PromptObject = prompt;
+        }
+
+        public async Task<bool> CompileReport(){
+            var request = await this.HttpHandler.grabCourseData();
+            var result = this.ReportGenerator.GenerateReport(request);
+            return result;
         }
 
         // public async Task Compile()

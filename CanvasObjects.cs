@@ -78,6 +78,7 @@ namespace CanvasObjects
         public string workflow_state { get; set; }
         public bool restrict_enrollments_to_course_dates { get; set; }
 
+        // Custom Code
          public List<Module> Modules {get;set;}
     }
 

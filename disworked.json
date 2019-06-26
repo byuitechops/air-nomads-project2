@@ -1,0 +1,23 @@
+[{
+    "id": 1,
+    "name": "BYU-Idaho",
+    "workflow_state": "active",
+    "parent_account_id": null,
+    "root_account_id": null,
+    "uuid": "4iQDPeSYBXmnV6TBHwwomXhG7uX2bOdspYNXDeKW",
+    "default_storage_quota_mb": 2000,
+    "default_user_storage_quota_mb": 1000,
+    "default_group_storage_quota_mb": 1000,
+    "default_time_zone": "America/Denver"
+}, {
+    "id": 1,
+    "name": "BYU-Idaho",
+    "workflow_state": "active",
+    "parent_account_id": null,
+    "root_account_id": null,
+    "uuid": "4iQDPeSYBXmnV6TBHwwomXhG7uX2bOdspYNXDeKW",
+    "default_storage_quota_mb": 2000,
+    "default_user_storage_quota_mb": 1000,
+    "default_group_storage_quota_mb": 1000,
+    "default_time_zone": "America/Denver"
+}]
