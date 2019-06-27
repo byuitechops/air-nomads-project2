@@ -38,7 +38,7 @@ namespace ReportGeneratorFunctions
 
         public string Format { get; set; }
 
-        
+
         private string ConvertToCSV(string ReportData)
         {
             var course = JsonConvert.DeserializeObject<Course>(ReportData);
@@ -55,14 +55,14 @@ namespace ReportGeneratorFunctions
                                    {
                                        return property.Name;
                                    });
-                        foreach (var header in ModuleItemHeaders)
-                        {
-                            csv.WriteField(header);
-                        }
+                foreach (var header in ModuleItemHeaders)
+                {
+                    csv.WriteField(header);
+                }
                 csv.NextRecord();
                 foreach (var module in course.Modules)
                 {
-                    
+
                     foreach (var module_item in module.Module_Items)
                     {
                         var ModuleItemData = module_item.GetType()
@@ -109,7 +109,6 @@ namespace ReportGeneratorFunctions
 
         public bool GenerateReport(string ReportData, string[] headers)
         {
-            //var csvstring = convertToCSV<Course>(JsonConvert.DeserializeObject<Course>(ReportData), headers);
             return GenerateReport(ReportData);
         }
     }
@@ -156,6 +155,8 @@ namespace ReportGeneratorFunctions
 
             return false;
         }
+
+        private string
     }
 
     public class GenerateJSON : IReport
