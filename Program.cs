@@ -17,7 +17,7 @@ namespace air_nomades_projectSquared
                 case "html":
                     return new GenerateHTML();
                 case "csv":
-                    return new GenerateCSV();
+                    return new GenerateCSV(destination);
                 default:
                     System.Console.WriteLine("YOU ARE UNWORTHY! Loser!!");
                     break;
