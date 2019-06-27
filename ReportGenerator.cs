@@ -33,20 +33,22 @@ namespace ReportGeneratorFunctions
         private string _Destination;
         public string Destination
         {
-            get{
+            get
+            {
                 return _Destination;
             }
-            set{
-                if(!value.Contains(".json"))
-                    _Destination = value+".json";
+            set
+            {
+                if (!value.Contains(".json"))
+                    _Destination = value + ".json";
                 else
-                _Destination = value;
+                    _Destination = value;
             }
         }
         public GenerateJSON(string dest)
         {
             this.Destination = dest;
-        
+
         }
 
         public bool GenerateReport(string ReportData)

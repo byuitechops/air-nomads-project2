@@ -21,19 +21,22 @@ namespace air_nomades_projectSquared
                 default:
                     System.Console.WriteLine("YOU ARE UNWORTHY! Loser!!");
                     break;
-
             }
 
             return new GenerateJSON(destination);
         }
         static async Task Main(string[] args)
         {
+            /*Gets all necessary input and stores it into a list of prompts */
             List<Prompt> prompts = Prompter.PromptUser();
-            //var prompt = new Prompt("59796", "json", "disworked");
+            /*We will now initialize some objects that will be used as we go execute the call for each prompt */
             var compiler = new ReportCompile();
+            
             CourseGrabber http = new CourseGrabber();
+            
             var SuccessReports = new Dictionary<string, bool>();
-            System.Console.WriteLine("Prompts: "+prompts.Count);
+            
+            /*Loop through each prompt, set up the http call, calibrate how the compiler should work and send the success reports to the Dictionary we have for keeping track of it */
             foreach (var prompt in prompts)
             {
                 http.CourseID = prompt.CourseId;
@@ -41,13 +44,10 @@ namespace air_nomades_projectSquared
                 SuccessReports.Add(prompt.Destination, await compiler.CompileReport());
             }
 
-            foreach(var item in SuccessReports){
-                System.Console.WriteLine(item.Key +" ====== " + (item.Value ?  "Successful" : "Error!" ));
+            foreach (var item in SuccessReports)
+            {
+                System.Console.WriteLine(item.Key + " ====== " + (item.Value ? "Successful" : "Error!"));
             }
-
-            //var response = await http.GrabCourseObject();
-            //System.Console.WriteLine(JsonConvert.SerializeObject(response));
-            // GenerateJSON report = new GenerateJSON();
         }
     }
 }

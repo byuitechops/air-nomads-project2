@@ -30,7 +30,7 @@ namespace CanvasObjects
         public int items_count { get; set; }
         public string items_url { get; set; }
 
-        public List<Module_Item> Module_Items {get;set;}
+        public List<Module_Item> Module_Items { get; set; }
     }
 
     public class Calendar
@@ -79,7 +79,7 @@ namespace CanvasObjects
         public bool restrict_enrollments_to_course_dates { get; set; }
 
         // Custom Code
-         public List<Module> Modules {get;set;}
+        public List<Module> Modules { get; set; }
     }
 
 }

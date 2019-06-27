@@ -15,15 +15,12 @@ namespace air_nomades_projectSquared
             Token = Environment.GetEnvironmentVariable("API_TOKEN");
         }
         #pragma warning disable 1998
-        public virtual async Task<string> grabCourseData(){
+        public virtual async Task<string> grabCourseData()
+        {
             return "{\"result\":\"No Data to Grab!\"}";
         }
         virtual public async Task<string> MakeGetRequest(string url)
         {
-            // URL2 = "https://byui.instructure.com/api/courses/";
-            //DEFINE THE URL FOR THE CALL BY USING THE PROMPT OBJECT
-            // System.Console.WriteLine(Prompt);
-            // DO SUPER LEGIT ASYNC REQUEST STUFF HERE
             try
             {
                 //Sets securely our canvas token to our http header
@@ -45,17 +42,19 @@ namespace air_nomades_projectSquared
         }
     }
 
+
     public class CourseGrabber : HttpObject
     {
-        
         public string CourseID;
         public Course CourseObject;
         private ModuleGrabber ModGrabber;
 
-        private void setup(){
-    this.ModGrabber = new ModuleGrabber();
+        private void setup()
+        {
+            this.ModGrabber = new ModuleGrabber();
         }
-        public CourseGrabber(){
+        public CourseGrabber()
+        {
             setup();
         }
         public CourseGrabber(string CourseID)
@@ -63,10 +62,10 @@ namespace air_nomades_projectSquared
             this.CourseID = CourseID;
             setup();
         }
+        // Grabs the course with all of its modules and their items.
         public async override Task<string> grabCourseData()
         {
-            
-            var url  = "https://byui.instructure.com/api/v1/courses/" + this.CourseID;
+            var url = "https://byui.instructure.com/api/v1/courses/" + this.CourseID;
             var result = await this.MakeGetRequest(url);
             this.CourseObject = JsonConvert.DeserializeObject<Course>(result);
             this.CourseObject.Modules = await ModGrabber.getModules(url);
@@ -75,20 +74,17 @@ namespace air_nomades_projectSquared
             return json;
         }
 
-        // public Course grabCourse(ModuleGrabber ModuleGrabber, ModuleItemGrabber ItemGrabber){
+    }
 
-        // }
+    public class DoNothingGrabber : HttpObject
+    {
 
     }
 
-    public class DoNothingGrabber:HttpObject{
-        public override async Task<string> grabCourseData(){
-            return "{\"value\":\"doing nothing boss!\"}";
-        }
-    }
-
-    public class GetAccountHandler:HttpObject{
-        public override async Task<string> grabCourseData(){
+    public class GetAccountHandler : HttpObject
+    {
+        public override async Task<string> grabCourseData()
+        {
             return await this.MakeGetRequest("https://byui.instructure.com/api/v1/accounts");
         }
     }
@@ -129,7 +125,6 @@ namespace air_nomades_projectSquared
                 System.Console.WriteLine(module.items_url);
                 module.Module_Items = (await ItemGrabber.getModuleItems(module.items_url));
             }
-            //System.Console.WriteLine(Modules[0].Module_Items[0].id);
             return Modules;
         }
     }
