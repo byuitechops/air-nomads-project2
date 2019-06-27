@@ -47,16 +47,17 @@ namespace ReportGeneratorFunctions
             using (var csv = new CsvWriter(writer))
             {
 
-                foreach(var module in course.Modules)
-                    foreach(var module_item in module.Module_Items)
+                foreach (var module in course.Modules)
+                    foreach (var module_item in module.Module_Items)
                         System.Console.WriteLine(
-                             string.Join("," , 
+                             string.Join(",",
                         module_item.GetType()
                                    .GetProperties()
                                    .ToList()
-                                   .Select((property) => {
-                                        return property.GetValue(module_item);
-                                   }))); 
+                                   .Select((property) =>
+                                   {
+                                       return property.GetValue(module_item);
+                                   })));
                 // csv.WriteField(column.Value.ToString());
                 // csv.NextRecord();
                 writer.Flush();
@@ -93,7 +94,29 @@ namespace ReportGeneratorFunctions
     public class GenerateHTML : IReport
     {
         public string ReportData { get; set; }
-        public string Destination { get; set; }
+        private string _Destination;
+        public string Destination
+        {
+            get
+            {
+                return _Destination;
+            }
+            set
+            {
+                if (!value.Contains(".html"))
+                    _Destination = value + ".html";
+                else
+                    _Destination = value;
+            }
+        }
+
+
+        public GenerateHTML() { }
+        public GenerateHTML(string dest)
+        {
+            this.Destination = dest;
+        }
+
         public string Format { get; set; }
 
         public bool GenerateReport(string ReportData, string[] headers)
