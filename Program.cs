@@ -15,7 +15,7 @@ namespace air_nomades_projectSquared
                 case "json":
                     return new GenerateJSON(destination);
                 case "html":
-                    return new GenerateHTML();
+                    return new GenerateHTML(destination);
                 case "csv":
                     return new GenerateCSV(destination);
                 default:
@@ -31,7 +31,6 @@ namespace air_nomades_projectSquared
             List<Prompt> prompts = Prompter.PromptUser();
             /*We will now initialize some objects that will be used as we go execute the call for each prompt */
             var compiler = new ReportCompile();
-            
             CourseGrabber http = new CourseGrabber();
             
             var SuccessReports = new Dictionary<string, bool>();
@@ -41,12 +40,15 @@ namespace air_nomades_projectSquared
             {
                 http.CourseID = prompt.CourseId;
                 compiler.CalibrateCompiler(prompt, grabReportObject(prompt.OutFormat, prompt.Destination), http);
-                SuccessReports.Add(prompt.Destination, await compiler.CompileReport());
+                var success = await compiler.CompileReport();
+                SuccessReports.Add(prompt.Destination, success);
             }
 
             foreach (var item in SuccessReports)
             {
+                System.Console.WriteLine("*******************");
                 System.Console.WriteLine(item.Key + " ====== " + (item.Value ? "Successful" : "Error!"));
+                System.Console.WriteLine("*******************");
             }
         }
     }

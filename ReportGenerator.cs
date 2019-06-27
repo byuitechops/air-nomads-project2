@@ -38,7 +38,7 @@ namespace ReportGeneratorFunctions
 
         public string Format { get; set; }
 
-
+        
         private string ConvertToCSV(string ReportData)
         {
             var course = JsonConvert.DeserializeObject<Course>(ReportData);
@@ -46,18 +46,41 @@ namespace ReportGeneratorFunctions
             using (var writer = new StringWriter())
             using (var csv = new CsvWriter(writer))
             {
-
+                csv.WriteField("Course_ID");
+                csv.WriteField("Module_ID");
+                var ModuleItemHeaders = course.Modules[0].Module_Items[0].GetType()
+                                   .GetProperties()
+                                   .ToList()
+                                   .Select((property) =>
+                                   {
+                                       return property.Name;
+                                   });
+                        foreach (var header in ModuleItemHeaders)
+                        {
+                            csv.WriteField(header);
+                        }
+                csv.NextRecord();
                 foreach (var module in course.Modules)
+                {
+                    
                     foreach (var module_item in module.Module_Items)
-                        System.Console.WriteLine(
-                             string.Join(",",
-                        module_item.GetType()
+                    {
+                        var ModuleItemData = module_item.GetType()
                                    .GetProperties()
                                    .ToList()
                                    .Select((property) =>
                                    {
                                        return property.GetValue(module_item);
-                                   })));
+                                   });
+                        csv.WriteField(course.id);
+                        foreach (var item in ModuleItemData)
+                        {
+                            csv.WriteField(item);
+                        }
+                        csv.NextRecord();
+                    }
+                }
+
                 // csv.WriteField(column.Value.ToString());
                 // csv.NextRecord();
                 writer.Flush();
@@ -129,7 +152,9 @@ namespace ReportGeneratorFunctions
 
         public bool GenerateReport(string ReportData)
         {
-            throw new System.NotImplementedException();
+
+
+            return false;
         }
     }
 
