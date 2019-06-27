@@ -32,9 +32,9 @@ namespace air_nomades_projectSquared
             /*We will now initialize some objects that will be used as we go execute the call for each prompt */
             var compiler = new ReportCompile();
             CourseGrabber http = new CourseGrabber();
-            
+
             var SuccessReports = new Dictionary<string, bool>();
-            
+
             /*Loop through each prompt, set up the http call, calibrate how the compiler should work and send the success reports to the Dictionary we have for keeping track of it */
             foreach (var prompt in prompts)
             {
