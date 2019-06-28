@@ -157,12 +157,92 @@ namespace ReportGeneratorFunctions
 
         public bool GenerateReport(string ReportData)
         {
+            string HtmlFile = "";
+            var course = JsonConvert.DeserializeObject<Course>(ReportData);
+            HtmlFile += GetHead();
+            HtmlFile += BuildTitle(course);
+
 
 
             return false;
         }
 
-        
+        private string GetHead()
+        {
+
+            return "";
+        }
+
+        private string BuildTitle(Course course)
+        {
+
+            return "";
+        }
+
+        private string BuildModule(Module module)
+        {
+
+            var moduleHtml = "<div class=\"card\">" +
+                "<div class=\"card-header\" id=\"headingOne\"><h2 class=\"mb-0\">" +
+                    $"<a class=\"btn btn-primary\" data-toggle=\"collapse\" href=\"#{module.id}\" aria-expanded=\"false\"aria-controls=\"{module.id}\">" +
+                        $"<strong>{module.name}</strong></a></h2></div>" +
+                $"<div class=\"collapse\" id=\"{module.id}\">";
+
+            foreach (var moduleItem in module.Module_Items)
+            {
+                moduleHtml += BuildModuleItem(moduleItem);
+            }
+            moduleHtml += "</div>";
+            return moduleHtml;
+        }
+
+        private string BuildModuleItem(Module_Item moduleItem)
+        {
+            var itemHtml = "<a href=\"https://canvas.example.edu/courses/222/modules/items/768\">" +
+                "<div class=\"card\">" +
+                    "<div class=\"card-body\">" +
+                        "<strong>Syllabus</strong>" +
+                        "<i class=\"material-icons ";
+            if (moduleItem.published)
+            {
+                itemHtml += "published";
+            }
+            else
+            {
+                itemHtml += "unpublished";
+            }
+            itemHtml += "\">";
+            itemHtml += GetModuleItemType(moduleItem.type);
+            itemHtml += "</i></div></div></a>";
+
+            return itemHtml;
+        }
+
+        private string GetModuleItemType(string moduleItemType)
+        {
+            if (moduleItemType == "File")
+            {
+                return "folder";
+            }
+            else if (moduleItemType == "Discussion")
+            {
+                return "forum";
+            }
+            else if (moduleItemType == "Quiz")
+            {
+                return "alarm";
+            }
+            else if (moduleItemType == "ExternalTool")
+            {
+                return "launch";
+            }
+            else
+            {
+                return "assignment";
+            }
+        }
+
+
     }
 
     public class GenerateJSON : IReport
@@ -201,7 +281,7 @@ namespace ReportGeneratorFunctions
             {
                 throw e;
             }
-           
+
 
         }
         public bool GenerateReport(string ReportData, string[] headers)

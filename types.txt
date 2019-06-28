@@ -1,0 +1,5 @@
+File = folder
+Discussion = forum
+Assignment = assignment
+Quiz = alarm
+ExternalTool = launch

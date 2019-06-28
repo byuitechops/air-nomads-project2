@@ -8,90 +8,96 @@
     <title>HTML Report</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <style>
+        body {
+            max-width: 800px;
+        }
+        
+        .card-header {
+            background-color: rgb(231, 231, 231);
+        }
+
+        .published {
+            color: rgb(0, 180, 0);
+        }
+
+        .unpublished {
+            color: rgb(163, 163, 163);
+        }
+
+        a {
+            font-style: bold
+        }
+
+        .material-icons {
+            float: right;
+        }
+    </style>
 </head>
 
 <body>
     <div class="jumbotron">
-        <h1 class="display-4">Fake Course 101</h1>
-        <hr class="my-4">
-        <p class="lead">CourseID: COURSE101</p>
-        <p class="lead">ModName:</p>
-        <p class="lead">Name:</p>
-        <p class="lead">ID:</p>
-        <p class="lead">Url: <a href=""></a></p>
-        <p class="lead">Type:</p>
-        <p class="lead">Published:</p>
-        <p class="lead">ModuleID:</p>
+        <h1 class="display-4">Modules</h1>
+        <h1 class="display-5">Fake Course 101</h1>
     </div>
 
     <div class="card">
         <div class="card-header" id="headingOne">
             <h2 class="mb-0">
-                <a class="btn btn-link" data-toggle="collapse" href="#collapseExample1" aria-expanded="false"
+                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample1" aria-expanded="false"
                     aria-controls="collapseExample1">
-                    Module 1
+                    <strong>Welcome</strong>
                 </a>
             </h2>
         </div>
         <div class="collapse" id="collapseExample1">
-            <div class="card card-body">
-                <ul class="modules">
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                </ul>
-            </div>
+            <a href="https://canvas.example.edu/courses/222/modules/items/768">
+                <div class="card">
+                    <div class="card-body">
+                        <strong>Syllabus</strong>
+                        <i class="published material-icons">folder</i>
+                    </div>
+                </div>
+            </a>
+            <a href="https://canvas.example.edu/courses/222/modules/items/768">
+                <div class="card">
+                    <div class="card-body">
+                        Syllabus
+                        <i class="material-icons unpublished">forum</i>
+                    </div>
+                </div>
+            </a>
+            <a href="https://canvas.example.edu/courses/222/modules/items/768">
+                <div class="card">
+                    <div class="card-body">
+                        Syllabus
+                        <i class="material-icons published">launch</i>
+                    </div>
+                </div>
+            </a>
+            <a href="https://canvas.example.edu/courses/222/modules/items/768">
+                <div class="card">
+                    <div class="card-body">
+                        Syllabus
+                        <i class="material-icons unpublished">assignment</i>
+                    </div>
+                </div>
+            </a>
+            <a href="https://canvas.example.edu/courses/222/modules/items/768">
+                <div class="card">
+                    <div class="card-body">
+                        Syllabus
+                        <i class="material-icons unpublished">alarm</i>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header" id="headingTwo">
-            <h2 class="mb-0">
-                <a class="btn btn-link" data-toggle="collapse" href="#collapseExample2" aria-expanded="false"
-                    aria-controls="collapseExample2">
-                    Module 2
-                </a>
-            </h2>
-        </div>
-        <div class="collapse" id="collapseExample2">
-            <div class="card card-body">
-                <ul class="modules">
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-header" id="headingTwo">
-            <h2 class="mb-0">
-                <a class="btn btn-link" data-toggle="collapse" href="#collapseExample3" aria-expanded="false"
-                    aria-controls="collapseExample3">
-                    Module 3
-                </a>
-            </h2>
-        </div>
-        <div class="collapse" id="collapseExample3">
-            <div class="card card-body">
-                <ul class="modules">
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                    <li>Module Item</li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
 
 
