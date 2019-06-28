@@ -45,7 +45,7 @@ namespace ConsoleReport
             outputString += border;
             outputString += $"* {data} *\n";
             outputString += border;
-            System.Console.WriteLine(outputString);
+            // System.Console.WriteLine(outputString);
             Console.ResetColor();
             Console.BackgroundColor = ConsoleColor.Black;
             // Console.ReadKey();

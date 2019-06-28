@@ -11,6 +11,11 @@ using Newtonsoft.Json.Linq;
 namespace ReportGeneratorFunctions
 {
 
+
+    /****************************************************************************
+    *                                                                           *
+    *                                                                           *
+    ****************************************************************************/
     public class GenerateCSV : IReport
     {
         public string ReportData { get; set; }
@@ -119,6 +124,10 @@ namespace ReportGeneratorFunctions
         }
     }
 
+    /****************************************************************************
+    *                                                                           *
+    *                                                                           *
+    ****************************************************************************/
     public class GenerateHTML : IReport
     {
         public string ReportData { get; set; }
@@ -149,9 +158,6 @@ namespace ReportGeneratorFunctions
 
         public bool GenerateReport(string ReportData, string[] headers)
         {
-            /*
-             * TODO: Add header filter functionality here!
-             */
             return GenerateReport(ReportData);
         }
 
@@ -160,48 +166,62 @@ namespace ReportGeneratorFunctions
             string HtmlFile = "";
             var course = JsonConvert.DeserializeObject<Course>(ReportData);
             HtmlFile += GetHead();
-            HtmlFile += BuildTitle(course);
+            HtmlFile += BuildTitle(course.name);
+            foreach (var module in course.Modules)
+            {
+                HtmlFile += BuildModule(module);
+            }
+            HtmlFile += "</body>";
+            try
+            {
+                File.WriteAllText(this.Destination, HtmlFile);
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
-
-
-            return false;
         }
 
         private string GetHead()
         {
-
-            return "";
+            return File.ReadAllText("./boilerplate.html");
         }
 
-        private string BuildTitle(Course course)
+        private string BuildTitle(string courseName)
         {
+            var titleHtml = "<div class=\"jumbotron\">" +
+                "<h1 class=\"display-4\">Modules</h1>" +
+                $"<h1 class=\"display-5\">{courseName}</h1>" +
+                "</div>";
 
-            return "";
+            return titleHtml;
         }
 
         private string BuildModule(Module module)
         {
 
             var moduleHtml = "<div class=\"card\">" +
-                "<div class=\"card-header\" id=\"headingOne\"><h2 class=\"mb-0\">" +
-                    $"<a class=\"btn btn-primary\" data-toggle=\"collapse\" href=\"#{module.id}\" aria-expanded=\"false\"aria-controls=\"{module.id}\">" +
+                $"<div class=\"card-header\" id=\"heading{module.id}\"><h2 class=\"mb-0\">" +
+                    $"<a class=\"btn btn-primary\" data-toggle=\"collapse\" href=\"#module{module.id}\" aria-expanded=\"false\"aria-controls=\"module{module.id}\">" +
                         $"<strong>{module.name}</strong></a></h2></div>" +
-                $"<div class=\"collapse\" id=\"{module.id}\">";
+                $"<div class=\"collapse\" id=\"module{module.id}\">";
 
             foreach (var moduleItem in module.Module_Items)
             {
                 moduleHtml += BuildModuleItem(moduleItem);
             }
-            moduleHtml += "</div>";
+            moduleHtml += "</div></div>";
             return moduleHtml;
         }
 
         private string BuildModuleItem(Module_Item moduleItem)
         {
-            var itemHtml = "<a href=\"https://canvas.example.edu/courses/222/modules/items/768\">" +
+            var itemHtml = $"<a href=\"{moduleItem.html_url}\">" +
                 "<div class=\"card\">" +
                     "<div class=\"card-body\">" +
-                        "<strong>Syllabus</strong>" +
+                        $"<strong>{moduleItem.title}</strong>" +
                         "<i class=\"material-icons ";
             if (moduleItem.published)
             {
@@ -220,7 +240,11 @@ namespace ReportGeneratorFunctions
 
         private string GetModuleItemType(string moduleItemType)
         {
-            if (moduleItemType == "File")
+            if (moduleItemType == "Page")
+            {
+                return "list_alt";
+            }
+            else if (moduleItemType == "File")
             {
                 return "folder";
             }
@@ -236,6 +260,14 @@ namespace ReportGeneratorFunctions
             {
                 return "launch";
             }
+            else if (moduleItemType == "ExternalUrl")
+            {
+                return "launch";
+            }
+            else if (moduleItemType == "SubHeader")
+            {
+                return "";
+            }
             else
             {
                 return "assignment";
@@ -245,6 +277,11 @@ namespace ReportGeneratorFunctions
 
     }
 
+
+    /****************************************************************************
+    *                                                                           *
+    *                                                                           *
+    ****************************************************************************/
     public class GenerateJSON : IReport
     {
         public string ReportData { get; set; }
@@ -286,14 +323,16 @@ namespace ReportGeneratorFunctions
         }
         public bool GenerateReport(string ReportData, string[] headers)
         {
-            /*
-             * TODO: Add header filter functionality here!
-             */
+
             return GenerateReport(ReportData);
         }
     }
 
-    // Should we just make this an abstract public class so that we don't have to repeat variables?
+
+    /****************************************************************************
+    *                                                                           *
+    *                                                                           *
+    ****************************************************************************/
     public interface IReport
     {
         string ReportData { get; set; }
