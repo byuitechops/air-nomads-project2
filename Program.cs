@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ReportGeneratorFunctions;
+using ConsoleReport;
 namespace air_nomades_projectSquared
 {
     class Program
@@ -33,23 +34,26 @@ namespace air_nomades_projectSquared
             var compiler = new ReportCompile();
             CourseGrabber http = new CourseGrabber();
 
-            var SuccessReports = new Dictionary<string, bool>();
+            var SuccessReports = new List<ReportItem>();
 
             /*Loop through each prompt, set up the http call, calibrate how the compiler should work and send the success reports to the Dictionary we have for keeping track of it */
             foreach (var prompt in prompts)
             {
                 http.CourseID = prompt.CourseId;
                 compiler.CalibrateCompiler(prompt, grabReportObject(prompt.OutFormat, prompt.Destination), http);
-                var success = await compiler.CompileReport();
-                SuccessReports.Add(prompt.Destination, success);
+                
+                var success = false;
+                try {
+                    success = await compiler.CompileReport();
+                }catch (Exception e){
+                    // Display all errors in an awesome fashion.
+                    ConsoleRep.Log(new string[]{"WE GOT AN ERROR BOSS!",e.Message,"Course: "+prompt.CourseId, prompt.OutFormat +" "+prompt.Destination}, ConsoleColor.Red);
+                    success = false;
+                }
+                SuccessReports.Add(new ReportItem(prompt.OutFormat +" "+ prompt.Destination + "    =====   " +  (success ? "Successful" : "Error!"), success ? ConsoleColor.Green : ConsoleColor.Red));
             }
 
-            foreach (var item in SuccessReports)
-            {
-                System.Console.WriteLine("*******************");
-                System.Console.WriteLine(item.Key + " ====== " + (item.Value ? "Successful" : "Error!"));
-                System.Console.WriteLine("*******************");
-            }
+            ConsoleRep.Log(SuccessReports);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using CanvasObjects;
 using Newtonsoft.Json;
+using ConsoleReport;
 namespace air_nomades_projectSquared
 {
     public abstract class HttpObject
@@ -13,6 +14,11 @@ namespace air_nomades_projectSquared
         public HttpObject()
         {
             Token = Environment.GetEnvironmentVariable("API_TOKEN");
+            if(Token == null){
+                ConsoleRep.Log(new string[]{"We could not find the environment variable \"API_TOKEN\"","Please insert your auth token!"}, ConsoleColor.Blue, ConsoleColor.Yellow);
+                Token = Console.ReadLine();
+                Environment.SetEnvironmentVariable("API_TOKEN", Token);
+            }
         }
         #pragma warning disable 1998
         public virtual async Task<string> grabCourseData()

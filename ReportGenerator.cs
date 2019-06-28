@@ -39,13 +39,15 @@ namespace ReportGeneratorFunctions
         public string Format { get; set; }
 
 
-        private string ConvertToCSV(string ReportData)
+        private string ConvertCourseToCSV(string ReportData)
         {
             var course = JsonConvert.DeserializeObject<Course>(ReportData);
             string csvOutput = "";
             using (var writer = new StringWriter())
             using (var csv = new CsvWriter(writer))
             {
+
+                // WRITE THE CSV HEADERS
                 csv.WriteField("Course_ID");
                 csv.WriteField("Module_ID");
                 var ModuleItemHeaders = course.Modules[0].Module_Items[0].GetType()
@@ -60,11 +62,13 @@ namespace ReportGeneratorFunctions
                     csv.WriteField(header);
                 }
                 csv.NextRecord();
+                // WRITE THE CONTENT IN THE CSV
                 foreach (var module in course.Modules)
                 {
 
                     foreach (var module_item in module.Module_Items)
                     {
+                        // GRAB ALL THE DATA FOR EACH MODULE ITEM AND PUTS IT INTO A LIST
                         var ModuleItemData = module_item.GetType()
                                    .GetProperties()
                                    .ToList()
@@ -72,7 +76,9 @@ namespace ReportGeneratorFunctions
                                    {
                                        return property.GetValue(module_item);
                                    });
+                        // WRITES THE COURSE ID IN THE FIRST COLUMN
                         csv.WriteField(course.id);
+                        // WRITES EACH ATTRIBUTE OF THE MODULE ITEM
                         foreach (var item in ModuleItemData)
                         {
                             csv.WriteField(item);
@@ -84,6 +90,7 @@ namespace ReportGeneratorFunctions
                 // csv.WriteField(column.Value.ToString());
                 // csv.NextRecord();
                 writer.Flush();
+                // EXPORTS OUR CSV STRING
                 csvOutput = (writer.ToString());
             }
             return csvOutput;
@@ -94,14 +101,13 @@ namespace ReportGeneratorFunctions
         {
             try
             {
-                var csvstring = ConvertToCSV(ReportData);
+                var csvstring = ConvertCourseToCSV(ReportData);
                 System.IO.File.WriteAllText(_Destination, csvstring);
                 return true;
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e.Message);
-                return false;
+                throw e;
             }
 
 
@@ -156,7 +162,7 @@ namespace ReportGeneratorFunctions
             return false;
         }
 
-        private string
+        
     }
 
     public class GenerateJSON : IReport
@@ -193,9 +199,10 @@ namespace ReportGeneratorFunctions
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e.Message);
-                return false;
+                throw e;
             }
+           
+
         }
         public bool GenerateReport(string ReportData, string[] headers)
         {
