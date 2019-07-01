@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CanvasObjects;
 using Newtonsoft.Json;
 using ConsoleReport;
-namespace air_nomades_projectSquared
+namespace AirNomadHttpGrabers
 {
     public abstract class HttpObject
     {

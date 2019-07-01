@@ -1,8 +1,10 @@
 
 using System.Threading.Tasks;
+using AirNomadHttpGrabers;
+using AirNomadPrompter;
 using ReportGeneratorFunctions;
 
-namespace air_nomades_projectSquared
+namespace AirNomadReportCompile
 {
     class ReportCompile
     {

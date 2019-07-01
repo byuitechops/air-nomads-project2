@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using ConsoleReport;
 
-namespace air_nomades_projectSquared
+namespace AirNomadPrompter
 {
     public static class Prompter
     {
@@ -40,7 +41,10 @@ namespace air_nomades_projectSquared
             {
                 return false;
             }
-            else if (!Directory.Exists(path))
+            var directoryPath = Regex.IsMatch(path, @"([^\/\\]+\..*)") ? path : path + ".ext";
+            var fileext = new Regex(@"([^\/\\]+\..*)");
+            directoryPath = fileext.Replace(directoryPath, "");
+            if (!Directory.Exists(directoryPath))
             {
                 return false;
             }
@@ -52,13 +56,16 @@ namespace air_nomades_projectSquared
             {
                 return false;
             }
-            else if (response.Trim().ToUpper() != "N" && response.Trim().ToUpper() != "Y" )
+            else if (response.Trim().ToUpper() != "N" && response.Trim().ToUpper() != "Y")
             {
                 return false;
             }
             return true;
         }
-
+        private static bool DEFAULT(string s)
+        {
+            return true;
+        }
         private delegate bool Validator(string s);
         private static string getValidData(string prompt, Validator validator, string exresonse = "response")
         {
@@ -67,16 +74,16 @@ namespace air_nomades_projectSquared
             do
             {
                 times++;
-                if (times > 10)
+                if (times > 5)
                 {
-                    ConsoleRep.Log(new string[] { "You obviously have no idea what you are doing! Come back with someone who actually knows how to use this tool" }, ConsoleColor.DarkMagenta, ConsoleColor.Gray);
+                    ConsoleRep.Log(new string[] { "You obviously have no idea what you are doing! Come back with someone who actually knows how to use this tool" }, ConsoleColor.Green, ConsoleColor.DarkMagenta);
                     for (var i = 0; i < 3; i++)
                     {
                         Console.Beep();
                     }
                     throw new Exception("YOU ARE INCOMPETENT!");
                 }
-                else if (times < 5)
+                else if (times < 4)
                     System.Console.WriteLine((times > 1) ? $"That {exresonse} was not legit man! Try again! " : prompt);
                 else
                     ConsoleRep.Log(new string[] { "YOU ARE REALLY TRYING MY PATIENCE NOW!", $"That {exresonse} was not legit man! Try again! ", prompt }, ConsoleColor.DarkMagenta, ConsoleColor.Gray);
@@ -84,7 +91,7 @@ namespace air_nomades_projectSquared
             }
             while (!validator(response));
 
-            if (times >= 2)
+            if (times >= 5)
                 ConsoleRep.Log("THANK YOU INCOMPETENT BABOON!", ConsoleColor.DarkRed);
             return response;
         }
@@ -94,7 +101,7 @@ namespace air_nomades_projectSquared
 
             var run = true;
 
-            
+
             while (run)
             {
 
@@ -105,7 +112,7 @@ namespace air_nomades_projectSquared
                 PromptList.Add(new Prompt(courseId, outFormat, destination));
 
                 string keepGoing = getValidData("Would you like to add another course? (Y/N)", IsValidContinueCondition);
-                
+
                 if (keepGoing.ToUpper() == "N")
                 {
                     run = false;
@@ -114,21 +121,21 @@ namespace air_nomades_projectSquared
             return PromptList;
         }
     }
-}
-// this should be public because a program will be accessing the variable of each prompt
-public class Prompt
-{
-    public string ApiKey { get; set; }
-    public string CourseId { get; set; }
-    public string OutFormat { get; set; }
-    public string Destination { get; set; }
-
-    public Prompt(string CourseId, string OutFormat, string Destination)
+    // this should be public because a program will be accessing the variable of each prompt
+    public class Prompt
     {
-        this.CourseId = CourseId;
-        this.OutFormat = OutFormat;
-        this.Destination = Destination;
+        public string ApiKey { get; set; }
+        public string CourseId { get; set; }
+        public string OutFormat { get; set; }
+        public string Destination { get; set; }
+
+        public Prompt(string CourseId, string OutFormat, string Destination)
+        {
+            this.CourseId = CourseId;
+            this.OutFormat = OutFormat;
+            this.Destination = Destination;
+
+        }
 
     }
-
 }

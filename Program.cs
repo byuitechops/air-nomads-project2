@@ -4,7 +4,11 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ReportGeneratorFunctions;
 using ConsoleReport;
-namespace air_nomades_projectSquared
+using AirNomadPrompter;
+using AirNomadHttpGrabers;
+using AirNomadReportCompile;
+
+namespace AirNomadReportGenerators
 {
     class Program
     {
