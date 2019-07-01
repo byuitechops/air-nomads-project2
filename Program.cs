@@ -21,6 +21,7 @@ namespace air_nomades_projectSquared
                     return new GenerateCSV(destination);
                 default:
                     System.Console.WriteLine("YOU ARE UNWORTHY! Loser!!");
+                    ConsoleRep.Log(new string[]{$"Warning! We do not have a generator for the type \"{type.ToLower().Trim()}\"!!!", "We will just give you a json instead!"}, ConsoleColor.Yellow, ConsoleColor.DarkBlue);
                     break;
             }
 
@@ -28,8 +29,17 @@ namespace air_nomades_projectSquared
         }
         static async Task Main(string[] args)
         {
-            /*Gets all necessary input and stores it into a list of prompts */
-            List<Prompt> prompts = Prompter.PromptUser();
+            List<Prompt> prompts = new List<Prompt>();
+            try
+            {
+
+                /*Gets all necessary input and stores it into a list of prompts */
+                prompts = Prompter.PromptUser();
+            }catch(Exception e){
+                ConsoleRep.Log(new string[] {"There was an error collecting the prompt data!","Error:", e.Message}, ConsoleColor.Red);
+            }
+
+
             /*We will now initialize some objects that will be used as we go execute the call for each prompt */
             var compiler = new ReportCompile();
             CourseGrabber http = new CourseGrabber();
@@ -41,16 +51,19 @@ namespace air_nomades_projectSquared
             {
                 http.CourseID = prompt.CourseId;
                 compiler.CalibrateCompiler(prompt, grabReportObject(prompt.OutFormat, prompt.Destination), http);
-                
+
                 var success = false;
-                try {
+                try
+                {
                     success = await compiler.CompileReport();
-                }catch (Exception e){
+                }
+                catch (Exception e)
+                {
                     // Display all errors in an awesome fashion.
-                    ConsoleRep.Log(new string[]{"WE GOT AN ERROR BOSS!",e.Message,"Course: "+prompt.CourseId, prompt.OutFormat +" "+prompt.Destination}, ConsoleColor.Red);
+                    ConsoleRep.Log(new string[] { "WE GOT AN ERROR BOSS!", e.Message, "Course: " + prompt.CourseId, prompt.OutFormat + " " + prompt.Destination }, ConsoleColor.Red);
                     success = false;
                 }
-                SuccessReports.Add(new ReportItem(prompt.OutFormat +" "+ prompt.Destination + "    =====   " +  (success ? "Successful" : "Error!"), success ? ConsoleColor.Green : ConsoleColor.Red));
+                SuccessReports.Add(new ReportItem(prompt.OutFormat + " " + prompt.Destination + "    =====   " + (success ? "Successful" : "Error!"), success ? ConsoleColor.Green : ConsoleColor.Red));
             }
 
             ConsoleRep.Log(SuccessReports);

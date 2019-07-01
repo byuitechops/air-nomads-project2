@@ -166,7 +166,7 @@ namespace ReportGeneratorFunctions
             string HtmlFile = "";
             var course = JsonConvert.DeserializeObject<Course>(ReportData);
             HtmlFile += GetHead();
-            HtmlFile += BuildTitle(course.name);
+            HtmlFile += BuildTitle(course.name, course.id);
             foreach (var module in course.Modules)
             {
                 HtmlFile += BuildModule(module);
@@ -189,11 +189,12 @@ namespace ReportGeneratorFunctions
             return File.ReadAllText("./boilerplate.html");
         }
 
-        private string BuildTitle(string courseName)
+        private string BuildTitle(string courseName, int courseId)
         {
             var titleHtml = "<div class=\"jumbotron\">" +
                 "<h1 class=\"display-4\">Modules</h1>" +
                 $"<h1 class=\"display-5\">{courseName}</h1>" +
+                $"<h4 class=\"display-6\">{courseId}</h4>" +
                 "</div>";
 
             return titleHtml;
@@ -202,10 +203,24 @@ namespace ReportGeneratorFunctions
         private string BuildModule(Module module)
         {
 
-            var moduleHtml = "<div class=\"card\">" +
-                $"<div class=\"card-header\" id=\"heading{module.id}\"><h2 class=\"mb-0\">" +
+            var moduleHtml = 
+                    $"<div class=\"card\">" +
+                    $"<div class=\"card-header\" id=\"heading{module.id}\">"+
+                    $"<div class=\"container\">"+
+                    $"<div class=\"row\">"+
+                    $"<h2 class=\"mb-0\">" +
+                    $"<div class=\"col\">"+
                     $"<a class=\"btn btn-primary\" data-toggle=\"collapse\" href=\"#module{module.id}\" aria-expanded=\"false\"aria-controls=\"module{module.id}\">" +
-                        $"<strong>{module.name}</strong></a></h2></div>" +
+                    $"<strong>{module.name}</strong></a>"+
+                    $"</h2>" +
+                    $"<div class=\"col\">"+
+                        $"<p class = \"idz\">{module.id}</p>" +
+                    $"</div>"+
+                    $"</div>"+
+                    
+                    $"</div>"+
+                    $"</div>"+
+                        
                 $"<div class=\"collapse\" id=\"module{module.id}\">";
 
             foreach (var moduleItem in module.Module_Items)

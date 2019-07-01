@@ -52,7 +52,7 @@ namespace ConsoleReport
         }
 
         public static void Log(string[] data, ConsoleColor color = ConsoleColor.Black, ConsoleColor TextColor = ConsoleColor.White){
-            Log(data.ToList(), color);
+            Log(data.ToList(), color, TextColor);
         }
         public static void Log(List<string> data, ConsoleColor color = ConsoleColor.Black, ConsoleColor TextColor = ConsoleColor.White)
         {
