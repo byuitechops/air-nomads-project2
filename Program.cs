@@ -36,7 +36,9 @@ namespace air_nomades_projectSquared
                 /*Gets all necessary input and stores it into a list of prompts */
                 prompts = Prompter.PromptUser();
             }catch(Exception e){
-                ConsoleRep.Log(new string[] {"There was an error collecting the prompt data!","Error:", e.Message}, ConsoleColor.Red);
+                ConsoleRep.Log(new string[] {"There was an error collecting the prompt data!","Error:", e.Message, "Seeing that you have given us absolutely nothing to work with,", "I will just retire to my room until you actually give me something useful!"}, ConsoleColor.Red);
+
+                throw;
             }
 
 
