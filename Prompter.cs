@@ -44,6 +44,7 @@ namespace AirNomadPrompter
             var directoryPath = Regex.IsMatch(path, @"([^\/\\]+\..*)") ? path : path + ".ext";
             var fileext = new Regex(@"([^\/\\]+\..*)");
             directoryPath = fileext.Replace(directoryPath, "");
+            if(directoryPath == "") directoryPath = "./";
             if (!Directory.Exists(directoryPath))
             {
                 return false;
