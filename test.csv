@@ -1,0 +1,4 @@
+courseid, filetype, destination
+59796, html, ./output/test1.html
+59796, csv, ./output/test1.csv
+59796, json, ./output/test1.json

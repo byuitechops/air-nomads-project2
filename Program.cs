@@ -7,6 +7,8 @@ using ConsoleReport;
 using AirNomadPrompter;
 using AirNomadHttpGrabers;
 using AirNomadReportCompile;
+using System.IO;
+using CsvHelper;
 
 namespace AirNomadReportGenerators
 {
@@ -33,10 +35,29 @@ namespace AirNomadReportGenerators
         }
         static async Task Main(string[] args)
         {
-             //await GenerateReportsFromPrompt();
-             await FullProcessRuns();
+            System.Console.WriteLine("We made it this far!");
+            await GenerateReports( getPromptsFromType(args));
+
         }
-        static async Task GenerateReportsFromPrompt()
+
+        public static List<Prompt> getPromptsFromType(string[] args)
+        {
+            if(args.Length == 0)
+                return GenerateReportsFromPrompt();
+
+            switch (args[0])
+            {
+                case "csv":
+                case "c":
+                    return  GenerateReportsFromCsv(args[1]);
+                case "prompt":
+                case "p":
+                    return  GenerateReportsFromPrompt();
+                default:
+                    return  GenerateReportsFromPrompt();
+            }
+        }
+        static List<Prompt> GenerateReportsFromPrompt()
         {
             List<Prompt> prompts = new List<Prompt>();
             try
@@ -52,7 +73,56 @@ namespace AirNomadReportGenerators
                 throw;
             }
 
+            return prompts;
+        }
 
+        /* 
+        * This returns a list of String arrays from the given csv file
+        */
+        public static List<string[]> readCsvFromPath(string path)
+        {
+            var csvLines = new List<string[]>() { };
+            using (var reader = new StreamReader(path))
+            using (var parser = new CsvParser(reader))
+            {
+                var hasNext = true;
+                while (true)
+                {
+                    var records = parser.Read();
+                    hasNext = (records != null);
+                    if (!hasNext) break;
+                    csvLines.Add(records);
+
+                }
+            }
+            return csvLines;
+        }
+
+        static List<Prompt> GenerateReportsFromCsv(string filePath)
+        {
+            List<Prompt> prompts = new List<Prompt>();
+            try
+            {
+
+                /*Read PROMPTS FROM CSV */
+                List<string[]> promptData = readCsvFromPath(filePath);
+                //courseid, filetype, destination 
+                for (int i = 1; i < promptData.Count; i++)
+                {
+                    var prompt = new Prompt(promptData[i][0].Trim(), promptData[i][1].Trim(), promptData[i][2].Trim());
+                    prompts.Add(prompt);
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleRep.Log(new string[] { "There was an error collecting the prompt data!", "Error:", e.Message, "Seeing that you have given us absolutely nothing to work with,", "I will just retire to my room until you actually give me something useful!" }, ConsoleColor.Red);
+
+                throw;
+            }
+            return prompts;
+        }
+        static async Task GenerateReports(List<Prompt> prompts)
+        {
             /*We will now initialize some objects that will be used as we go execute the call for each prompt */
             var compiler = new ReportCompile();
             CourseGrabber http = new CourseGrabber();
@@ -80,18 +150,6 @@ namespace AirNomadReportGenerators
             }
 
             ConsoleRep.Log(SuccessReports);
-        }
-
-        public static async Task FullProcessRuns()
-        {
-             var token = Environment.GetEnvironmentVariable("API_TOKEN");
-             var RelPath = "./unicorn/";
-            var compiler = new ReportCompile();
-            var prompt = new Prompt("", "", RelPath+"");
-            CourseGrabber http = new CourseGrabber(prompt.CourseId);
-            compiler.CalibrateCompiler(grabReportObject(prompt.OutFormat, prompt.Destination), http);
-            var res = (await compiler.CompileReport());
-
         }
     }
 }
