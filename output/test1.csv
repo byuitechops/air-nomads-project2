@@ -1,4 +1,11 @@
-Course_ID,Module_ID,id,title,position,indent,type,module_id,html_url,content_id,url,published
-59796,5433942,Super Important Mandatory Thing,1,0,Assignment,591611,https://byui.instructure.com/courses/59796/modules/items/5433942,1921967,https://byui.instructure.com/api/v1/courses/59796/assignments/1921967,True
-59796,5433944,Less Important Thing,1,0,Assignment,591613,https://byui.instructure.com/courses/59796/modules/items/5433944,1921969,https://byui.instructure.com/api/v1/courses/59796/assignments/1921969,True
-59796,5433948,Other insignificant thing yet vital to your grade.,2,0,Assignment,591613,https://byui.instructure.com/courses/59796/modules/items/5433948,1921973,https://byui.instructure.com/api/v1/courses/59796/assignments/1921973,True
+Course_ID,Module_ID
+55036,5415006,TEST ASSIGNMENT 1,1,1,Assignment,587865,https://byui.instructure.com/courses/55036/modules/items/5415006,1913727,https://byui.instructure.com/api/v1/courses/55036/assignments/1913727,True
+55036,5415008,TEST PAGE 1,2,1,Page,587865,https://byui.instructure.com/courses/55036/modules/items/5415008,0,https://byui.instructure.com/api/v1/courses/55036/pages/test-page-1,True
+55036,5415010,TEST PAGE 2,3,1,Page,587865,https://byui.instructure.com/courses/55036/modules/items/5415010,0,https://byui.instructure.com/api/v1/courses/55036/pages/test-page-2,True
+55036,5415030,TEST TEXT HEADER 1,4,0,SubHeader,587865,,0,,False
+55036,5415012,TEST PAGE 3,5,1,Page,587865,https://byui.instructure.com/courses/55036/modules/items/5415012,0,https://byui.instructure.com/api/v1/courses/55036/pages/test-page-3,True
+55036,5415014,TEST EXTERNAL URL 1,6,1,ExternalUrl,587865,https://byui.instructure.com/api/v1/courses/55036/module_item_redirect/5415014,0,,True
+55036,5415016,TEST DISCUSSION 1,7,0,Discussion,587865,https://byui.instructure.com/courses/55036/modules/items/5415016,1020584,https://byui.instructure.com/api/v1/courses/55036/discussion_topics/1020584,False
+55036,5415018,TEST EXTERNAL TOOL 1,8,0,ExternalTool,587865,https://byui.instructure.com/courses/55036/modules/items/5415018,0,https://byui.instructure.com/api/v1/courses/55036/external_tools/sessionless_launch?url=https%3A%2F%2Fdocs.google.com%2Fspreadsheets%2Fd%2F1Z2x3ePnndmG8yYzjM57EpBIP3rdMuOz6IuSyewW9pjw%2Fedit%3Fusp%3Dsharing,True
+55036,5415024,TEST QUIZ 1,9,0,Quiz,587865,https://byui.instructure.com/courses/55036/modules/items/5415024,811195,https://byui.instructure.com/api/v1/courses/55036/quizzes/811195,True
+55036,5415028,template.html,10,0,File,587865,https://byui.instructure.com/courses/55036/modules/items/5415028,13012960,https://byui.instructure.com/api/v1/courses/55036/files/13012960,True

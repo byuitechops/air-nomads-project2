@@ -51,26 +51,33 @@ namespace ReportGeneratorFunctions
 
         private string ConvertCourseToCSV(string ReportData)
         {
+            System.Console.WriteLine(ReportData);
             var course = JsonConvert.DeserializeObject<Course>(ReportData);
             string csvOutput = "";
             using (var writer = new StringWriter())
             using (var csv = new CsvWriter(writer))
             {
+                System.Console.WriteLine("HAY is for hoarses!");
 
                 // WRITE THE CSV HEADERS
                 csv.WriteField("Course_ID");
                 csv.WriteField("Module_ID");
-                var ModuleItemHeaders = course.Modules[0].Module_Items[0].GetType()
+
+                IEnumerable<string> ModuleItemHeaders = null;
+                if (course.Modules.Count > 0)
+                    if(course.Modules[0].Module_Items.Count > 0)
+                    ModuleItemHeaders = course.Modules[0].Module_Items[0].GetType()
                                    .GetProperties()
                                    .ToList()
                                    .Select((property) =>
                                    {
                                        return property.Name;
                                    });
-                foreach (var header in ModuleItemHeaders)
-                {
-                    csv.WriteField(header);
-                }
+                if (ModuleItemHeaders != null)
+                    foreach (var header in ModuleItemHeaders)
+                    {
+                        csv.WriteField(header);
+                    }
                 csv.NextRecord();
                 // WRITE THE CONTENT IN THE CSV
                 foreach (var module in course.Modules)
@@ -117,7 +124,6 @@ namespace ReportGeneratorFunctions
             }
             catch (Exception e)
             {
-                return false;
                 throw e;
             }
 
@@ -190,7 +196,6 @@ namespace ReportGeneratorFunctions
             }
             catch (Exception e)
             {
-                return false;
                 throw e;
             }
 
@@ -347,7 +352,6 @@ namespace ReportGeneratorFunctions
             }
             catch (Exception e)
             {
-                return false;
                 throw e;
             }
 
