@@ -25,6 +25,7 @@ namespace AirNomadReportCompile
         {
             this.ReportGenerator = ReportGenerator;
             this.HttpHandler = HttpHandler;
+            System.Console.WriteLine(p.Destination);
         }
 
         public async Task<bool> CompileReport()

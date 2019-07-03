@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using CanvasObjects;
 using CsvHelper;
 using Newtonsoft.Json;
@@ -28,6 +29,10 @@ namespace ReportGeneratorFunctions
             }
             set
             {
+                var directoryPath = value;
+                System.Console.WriteLine(directoryPath);
+                if (directoryPath.Equals("") || directoryPath.EndsWith("\\") || directoryPath.EndsWith("/"))
+                    value += (DateTime.Now.ToString("HHmmssddmmyy") + "report-csv");
                 if (!value.Contains(".csv"))
                     _Destination = value + ".csv";
                 else
@@ -141,6 +146,10 @@ namespace ReportGeneratorFunctions
             }
             set
             {
+                var directoryPath = value;
+                System.Console.WriteLine(directoryPath);
+                if (directoryPath.Equals("") || directoryPath.EndsWith("\\") || directoryPath.EndsWith("/"))
+                    value += (DateTime.Now.ToString("HHmmssddmmyy") + "report-html");
                 if (!value.Contains(".html"))
                     _Destination = value + ".html";
                 else
@@ -148,9 +157,9 @@ namespace ReportGeneratorFunctions
             }
         }
 
-        private string PathToBoilerplate;    
+        private string PathToBoilerplate;
         public GenerateHTML() { }
-        public GenerateHTML(string dest, string PathToBoilerplate )
+        public GenerateHTML(string dest, string PathToBoilerplate)
         {
             this.Destination = dest;
             this.PathToBoilerplate = PathToBoilerplate;
@@ -206,24 +215,24 @@ namespace ReportGeneratorFunctions
         private string BuildModule(Module module)
         {
 
-            var moduleHtml = 
+            var moduleHtml =
                     $"<div class=\"card\">" +
-                    $"<div class=\"card-header\" id=\"heading{module.id}\">"+
-                    $"<div class=\"container\">"+
-                    $"<div class=\"row\">"+
+                    $"<div class=\"card-header\" id=\"heading{module.id}\">" +
+                    $"<div class=\"container\">" +
+                    $"<div class=\"row\">" +
                     $"<h2 class=\"mb-0\">" +
-                    $"<div class=\"col\">"+
+                    $"<div class=\"col\">" +
                     $"<a class=\"btn btn-primary\" data-toggle=\"collapse\" href=\"#module{module.id}\" aria-expanded=\"false\"aria-controls=\"module{module.id}\">" +
-                    $"<strong>{module.name}</strong></a>"+
+                    $"<strong>{module.name}</strong></a>" +
                     $"</h2>" +
-                    $"<div class=\"col\">"+
+                    $"<div class=\"col\">" +
                         $"<p class = \"idz\">{module.id}</p>" +
-                    $"</div>"+
-                    $"</div>"+
-                    
-                    $"</div>"+
-                    $"</div>"+
-                        
+                    $"</div>" +
+                    $"</div>" +
+
+                    $"</div>" +
+                    $"</div>" +
+
                 $"<div class=\"collapse\" id=\"module{module.id}\">";
 
             foreach (var moduleItem in module.Module_Items)
@@ -312,6 +321,10 @@ namespace ReportGeneratorFunctions
             }
             set
             {
+                var directoryPath = value;
+                System.Console.WriteLine(directoryPath);
+                if (directoryPath.Equals("") || directoryPath.EndsWith("\\") || directoryPath.EndsWith("/"))
+                    value += (DateTime.Now.ToString("HHmmssddmmyy") + "report-json");
                 if (!value.Contains(".json"))
                     _Destination = value + ".json";
                 else

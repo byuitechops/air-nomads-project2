@@ -25,7 +25,7 @@ namespace AirNomadReportGenerators
                     return new GenerateCSV(destination);
                 default:
                     System.Console.WriteLine("YOU ARE UNWORTHY! Loser!!");
-                    ConsoleRep.Log(new string[]{$"Warning! We do not have a generator for the type \"{type.ToLower().Trim()}\"!!!", "We will just give you a json instead!"}, ConsoleColor.Yellow, ConsoleColor.DarkBlue);
+                    ConsoleRep.Log(new string[] { $"Warning! We do not have a generator for the type \"{type.ToLower().Trim()}\"!!!", "We will just give you a json instead!" }, ConsoleColor.Yellow, ConsoleColor.DarkBlue);
                     break;
             }
 
@@ -33,14 +33,21 @@ namespace AirNomadReportGenerators
         }
         static async Task Main(string[] args)
         {
+             //await GenerateReportsFromPrompt();
+             await FullProcessRuns();
+        }
+        static async Task GenerateReportsFromPrompt()
+        {
             List<Prompt> prompts = new List<Prompt>();
             try
             {
 
                 /*Gets all necessary input and stores it into a list of prompts */
                 prompts = Prompter.PromptUser();
-            }catch(Exception e){
-                ConsoleRep.Log(new string[] {"There was an error collecting the prompt data!","Error:", e.Message, "Seeing that you have given us absolutely nothing to work with,", "I will just retire to my room until you actually give me something useful!"}, ConsoleColor.Red);
+            }
+            catch (Exception e)
+            {
+                ConsoleRep.Log(new string[] { "There was an error collecting the prompt data!", "Error:", e.Message, "Seeing that you have given us absolutely nothing to work with,", "I will just retire to my room until you actually give me something useful!" }, ConsoleColor.Red);
 
                 throw;
             }
@@ -73,6 +80,18 @@ namespace AirNomadReportGenerators
             }
 
             ConsoleRep.Log(SuccessReports);
+        }
+
+        public static async Task FullProcessRuns()
+        {
+             var token = Environment.GetEnvironmentVariable("API_TOKEN");
+             var RelPath = "./unicorn/";
+            var compiler = new ReportCompile();
+            var prompt = new Prompt("", "", RelPath+"");
+            CourseGrabber http = new CourseGrabber(prompt.CourseId);
+            compiler.CalibrateCompiler(grabReportObject(prompt.OutFormat, prompt.Destination), http);
+            var res = (await compiler.CompileReport());
+
         }
     }
 }

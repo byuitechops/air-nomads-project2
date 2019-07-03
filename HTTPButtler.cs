@@ -14,13 +14,14 @@ namespace AirNomadHttpGrabers
         public HttpObject()
         {
             Token = Environment.GetEnvironmentVariable("API_TOKEN");
-            if(Token == null){
-                ConsoleRep.Log(new string[]{"We could not find the environment variable \"API_TOKEN\"","Please insert your auth token!"}, ConsoleColor.Blue, ConsoleColor.Yellow);
+            if (Token == null)
+            {
+                ConsoleRep.Log(new string[] { "We could not find the environment variable \"API_TOKEN\"", "Please insert your auth token!" }, ConsoleColor.Blue, ConsoleColor.Yellow);
                 Token = Console.ReadLine();
                 Environment.SetEnvironmentVariable("API_TOKEN", Token);
             }
         }
-        #pragma warning disable 1998
+#pragma warning disable 1998
         public virtual async Task<string> grabCourseData()
         {
             return "{\"result\":\"No Data to Grab!\"}";
@@ -73,11 +74,17 @@ namespace AirNomadHttpGrabers
         {
             var url = "https://byui.instructure.com/api/v1/courses/" + this.CourseID;
             var result = await this.MakeGetRequest(url);
-            this.CourseObject = JsonConvert.DeserializeObject<Course>(result);
-            this.CourseObject.Modules = await ModGrabber.getModules(url);
-            var json = JsonConvert.SerializeObject(this.CourseObject, Formatting.Indented);
+            try
+            {
+                this.CourseObject = JsonConvert.DeserializeObject<Course>(result);
+                this.CourseObject.Modules = await ModGrabber.getModules(url);
+                var json = JsonConvert.SerializeObject(this.CourseObject, Formatting.Indented);
+                return json;
+            }catch(Exception e){
+                System.Console.WriteLine(e.Message);
+                return "INVALID DATA";
+            }
 
-            return json;
         }
 
     }
