@@ -82,7 +82,7 @@ namespace AirNomadHttpGrabers
                 return json;
             }catch(Exception e){
                 System.Console.WriteLine(e.Message);
-                return "INVALID DATA";
+                return "{\"system_response\":\"There was an error processing the response from the url "+url+"\", \"server_response\":"+result+"}";
             }
 
         }

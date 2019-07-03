@@ -84,8 +84,8 @@ namespace AirNomadReportGenerators
 
         public static async Task FullProcessRuns()
         {
-             var token = Environment.GetEnvironmentVariable("API_TOKEN");
-             var RelPath = "./unicorn/";
+            var token = Environment.GetEnvironmentVariable("API_TOKEN");
+            var RelPath = "./unicorn/";
             var compiler = new ReportCompile();
             var prompt = new Prompt("", "", RelPath+"");
             CourseGrabber http = new CourseGrabber(prompt.CourseId);
