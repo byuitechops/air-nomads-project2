@@ -10,17 +10,21 @@ namespace AirNomadReportCompile
     {
         private IReport ReportGenerator;
         private HttpObject HttpHandler;
-        private Prompt PromptObject;
+       
         public ReportCompile() { }
-        public ReportCompile(Prompt prompt, IReport ReportGenerator, HttpObject HttpHandler)
+        public ReportCompile( IReport ReportGenerator, HttpObject HttpHandler)
         {
-            this.CalibrateCompiler(prompt, ReportGenerator, HttpHandler);
+            this.CalibrateCompiler( ReportGenerator, HttpHandler);
         }
-        public void CalibrateCompiler(Prompt prompt, IReport ReportGenerator, HttpObject HttpHandler)
+        public void CalibrateCompiler(IReport ReportGenerator, HttpObject HttpHandler)
         {
             this.ReportGenerator = ReportGenerator;
             this.HttpHandler = HttpHandler;
-            this.PromptObject = prompt;
+        }
+        public void CalibrateCompiler(Prompt p, IReport ReportGenerator, HttpObject HttpHandler)
+        {
+            this.ReportGenerator = ReportGenerator;
+            this.HttpHandler = HttpHandler;
         }
 
         public async Task<bool> CompileReport()

@@ -112,6 +112,7 @@ namespace ReportGeneratorFunctions
             }
             catch (Exception e)
             {
+                return false;
                 throw e;
             }
 
@@ -180,6 +181,7 @@ namespace ReportGeneratorFunctions
             }
             catch (Exception e)
             {
+                return false;
                 throw e;
             }
 
@@ -332,6 +334,7 @@ namespace ReportGeneratorFunctions
             }
             catch (Exception e)
             {
+                return false;
                 throw e;
             }
 
