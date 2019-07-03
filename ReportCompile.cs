@@ -6,7 +6,7 @@ using ReportGeneratorFunctions;
 
 namespace AirNomadReportCompile
 {
-    class ReportCompile
+    public class ReportCompile
     {
         private IReport ReportGenerator;
         private HttpObject HttpHandler;

@@ -20,7 +20,7 @@ namespace AirNomadReportGenerators
                 case "json":
                     return new GenerateJSON(destination);
                 case "html":
-                    return new GenerateHTML(destination);
+                    return new GenerateHTML(destination, "./boilerplate.html");
                 case "csv":
                     return new GenerateCSV(destination);
                 default:

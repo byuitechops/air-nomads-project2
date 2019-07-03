@@ -147,11 +147,12 @@ namespace ReportGeneratorFunctions
             }
         }
 
-
+        private string PathToBoilerplate;    
         public GenerateHTML() { }
-        public GenerateHTML(string dest)
+        public GenerateHTML(string dest, string PathToBoilerplate )
         {
             this.Destination = dest;
+            this.PathToBoilerplate = PathToBoilerplate;
         }
 
         public string Format { get; set; }
@@ -186,7 +187,7 @@ namespace ReportGeneratorFunctions
 
         private string GetHead()
         {
-            return File.ReadAllText("./boilerplate.html");
+            return File.ReadAllText(PathToBoilerplate);
         }
 
         private string BuildTitle(string courseName, int courseId)
